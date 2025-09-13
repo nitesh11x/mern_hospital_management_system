@@ -11,6 +11,9 @@ export const generateTokenPatient = (patient, message, statusCode, res) => {
         Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
       ),
       httpOnly: true,
+       secure: true,        // must be true on HTTPS
+    sameSite: "None",    // required for cross-site
+    path: "/", 
     })
     .json({ message, success: true, token, patient });
 };
@@ -26,6 +29,9 @@ export const generateToken = (user, message, statusCode, res) => {
         Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000
       ),
       httpOnly: true,
+       secure: true,        // must be true on HTTPS
+    sameSite: "None",    // required for cross-site
+    path: "/", 
     })
     .json({ message, success: true, token, user });
 };
