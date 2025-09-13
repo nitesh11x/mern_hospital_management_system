@@ -15,7 +15,8 @@ function AppState({ children }) {
   const [reviews, setReviews] = useState([]);
   const [appointments, setAppointments] = useState([]);
 
-  const url = "http://localhost:1111/api";
+  // const url = "http://localhost:1111/api";
+  const url = "https://new-care-healtcare.onrender.com/api";
 
   useEffect(() => {
     const storedAdminAuth = localStorage.getItem("isAdminAuth") === "true";
