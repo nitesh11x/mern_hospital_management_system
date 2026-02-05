@@ -8,6 +8,6 @@ import {
 
 const router = express.Router();
 router.post("/send", isPatientAuth, sendFeedBack);
-router.get("/all",  getAllFeedBack);
+router.get("/all", getAllFeedBack);
 router.delete("/delete/:id", isAdminAuth, deleteFeedBackById);
 export default router;

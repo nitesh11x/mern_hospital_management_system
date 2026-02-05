@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import AppContext from "../../context/AppContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, Phone, Lock, User, Calendar, ArrowRight } from "lucide-react";
 
 const PatientRegister = () => {
   const navigate = useNavigate();
@@ -46,177 +47,177 @@ const PatientRegister = () => {
   };
 
   return (
-    <section className="flex mt-18 justify-center items-center min-h-screen bg-gradient-to-r from-purple-100 to-purple-200">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded-sm p-6 w-full max-w-lg border border-gray-200"
-      >
-        <h1 className="text-2xl font-bold text-purple-800 text-center mb-6 tracking-wide">
-          Patient Registration
-        </h1>
+    <section className="min-h-screen py-10 flex items-center justify-center bg-[url('/hero.jpg')] bg-cover bg-center relative mt-16">
+      <div className="absolute inset-0 bg-blue-900/60 backdrop-blur-sm"></div>
 
-        {/* First & Last Name */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              First Name
-            </label>
+      <div className="bg-white/95 backdrop-blur-xl shadow-2xl rounded-2xl w-full max-w-2xl p-8 relative z-10 border border-white/20">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
+          <p className="text-gray-500">Join us to manage your health journey</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* First Name */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 ml-1">First Name</label>
             <input
               type="text"
               name="firstName"
               value={patientData.firstName}
               onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter first name"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all"
+              placeholder="John"
               required
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Last Name
-            </label>
+
+          {/* Last Name */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 ml-1">Last Name</label>
             <input
               type="text"
               name="lastName"
               value={patientData.lastName}
               onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter last name"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all"
+              placeholder="Doe"
               required
             />
           </div>
-        </div>
 
-        {/* Email */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={patientData.email}
-            onChange={handleChange}
-            className="mt-1 w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            placeholder="Enter email"
-            required
-          />
-        </div>
-
-        {/* Phone */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Phone
-          </label>
-          <input
-            type="tel"
-            name="phone"
-            value={patientData.phone}
-            onChange={handleChange}
-            className="mt-1 w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            placeholder="Enter phone number"
-            required
-          />
-        </div>
-
-        {/* DOB & Gender */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Date of Birth
-            </label>
-            <input
-              type="date"
-              name="dob"
-              value={patientData.dob}
-              onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              required
-            />
+          {/* Email */}
+          <div className="space-y-2 md:col-span-2">
+            <label className="text-sm font-medium text-gray-700 ml-1">Email Address</label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-3.5 text-gray-400" size={18} />
+              <input
+                type="email"
+                name="email"
+                value={patientData.email}
+                onChange={handleChange}
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all"
+                placeholder="john.doe@example.com"
+                required
+              />
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Gender
-            </label>
+
+          {/* Phone */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 ml-1">Phone Number</label>
+            <div className="relative">
+              <Phone className="absolute left-3 top-3.5 text-gray-400" size={18} />
+              <input
+                type="tel"
+                name="phone"
+                value={patientData.phone}
+                onChange={handleChange}
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all"
+                placeholder="+1 234 567 890"
+                required
+              />
+            </div>
+          </div>
+
+          {/* DOB */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 ml-1">Date of Birth</label>
+            <div className="relative">
+              <Calendar className="absolute left-3 top-3.5 text-gray-400" size={18} />
+              <input
+                type="date"
+                name="dob"
+                value={patientData.dob}
+                onChange={handleChange}
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Gender */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 ml-1">Gender</label>
             <select
               name="gender"
               value={patientData.gender}
               onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all appearance-none cursor-pointer"
               required
             >
-              <option value="">Select</option>
+              <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
           </div>
-        </div>
 
-        {/* Password */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
-          <input
-            type="password"
-            name="password"
-            value={patientData.password}
-            onChange={handleChange}
-            className="mt-1 w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            placeholder="Enter password"
-            required
-          />
-        </div>
+          {/* Role (ReadOnly) */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 ml-1">Account Role</label>
+            <input
+              type="text"
+              name="role"
+              value={patientData.role}
+              readOnly
+              className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-xl text-gray-500 cursor-not-allowed"
+            />
+          </div>
 
-        {/* Confirm Password */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Confirm Password
-          </label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={patientData.confirmPassword}
-            onChange={handleChange}
-            className="mt-1 w-full border border-gray-300 rounded-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            placeholder="Confirm password"
-            required
-          />
-        </div>
 
-        {/* Role (ReadOnly) */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">
-            Role
-          </label>
-          <input
-            type="text"
-            name="role"
-            value={patientData.role}
-            readOnly
-            className="mt-1 w-full border border-gray-200 bg-gray-100 rounded-sm px-3 py-2 text-gray-500 cursor-not-allowed"
-          />
-        </div>
+          {/* Password */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 ml-1">Password</label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-3.5 text-gray-400" size={18} />
+              <input
+                type="password"
+                name="password"
+                value={patientData.password}
+                onChange={handleChange}
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+          </div>
 
-        {/* Submit */}
-        <button
-          type="submit"
-          className="w-full bg-purple-600 text-white py-2 rounded-sm font-medium hover:bg-purple-700 transition shadow-sm"
-        >
-          Register
-        </button>
+          {/* Confirm Password */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 ml-1">Confirm Password</label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-3.5 text-gray-400" size={18} />
+              <input
+                type="password"
+                name="confirmPassword"
+                value={patientData.confirmPassword}
+                onChange={handleChange}
+                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+          </div>
 
-        {/* Extra link */}
-        <p className="text-sm text-gray-600 text-center mt-5">
-          Already have an account?{" "}
-          <a
-            href="/patient/login"
-            className="text-purple-600 hover:text-purple-800 font-semibold"
+          {/* Submit */}
+          <button
+            type="submit"
+            className="md:col-span-2 w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2 mt-4"
           >
-            Login
-          </a>
-        </p>
-      </form>
+            Create Account <ArrowRight size={20} />
+          </button>
+        </form>
+
+        <div className="mt-8 text-center text-sm text-gray-500">
+          Already have an account?{" "}
+          <Link
+            to="/patient/login"
+            className="text-purple-600 font-bold hover:underline"
+          >
+            Sign In
+          </Link>
+        </div>
+      </div>
     </section>
   );
 };

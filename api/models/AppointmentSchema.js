@@ -19,7 +19,6 @@ const appointmentSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Email is required"],
-    unique: true, // prevent duplicate emails
     lowercase: true, // normalize
     validate: [validator.isEmail, "Please provide a valid email"],
   },
@@ -38,8 +37,8 @@ const appointmentSchema = new mongoose.Schema({
     type: String,
     required: [true, "Gender is required"],
     enum: {
-      values: ["male", "female"],
-      message: "Gender must be either male or female",
+      values: ["male", "female", "other"],
+      message: "Gender must be either male, female or other",
     },
   },
   appointment_date: {
@@ -51,8 +50,14 @@ const appointmentSchema = new mongoose.Schema({
     required: true,
   },
   doctor: {
-    firstName: {},
-    lastName: {},
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
   },
   hasVisited: {
     type: Boolean,

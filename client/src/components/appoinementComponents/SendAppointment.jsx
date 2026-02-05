@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import AppContext from "../../context/AppContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { Calendar, User, Mail, Phone, MapPin, CreditCard, Stethoscope, Clock, ShieldAlert } from "lucide-react";
 
 const SendAppointment = () => {
   const { doctor, postAppointment, isPatientAuth } = useContext(AppContext);
@@ -53,7 +54,7 @@ const SendAppointment = () => {
     setMessage("");
 
     try {
-      const res = await postAppointment(
+      await postAppointment(
         appointmentData.firstName,
         appointmentData.lastName,
         appointmentData.email,
@@ -70,9 +71,7 @@ const SendAppointment = () => {
       );
 
       setMessage("✅ Appointment booked successfully!");
-      console.log("Appointment response:", res);
 
-      // reset form
       setAppointmentData({
         firstName: "",
         lastName: "",
@@ -96,270 +95,211 @@ const SendAppointment = () => {
     }
   };
 
-  return (
-    <>
-      {!isPatientAuth && (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-100 via-purple-50 to-white px-4">
-          <div className="bg-white shadow-lg rounded-sm p-8 text-center max-w-md w-full border border-purple-200">
-            <h2 className="text-2xl font-bold text-purple-800 mb-4">
-              Please Login or Register
-            </h2>
-            <p className="text-gray-600 mb-6">
-              You must be logged in to book an appointment.
-            </p>
-            <div className="flex gap-4 justify-center">
-              <button
-                onClick={() => navigate("/patient/login")}
-                className="px-6 py-2 bg-purple-600 text-white rounded-sm shadow hover:bg-purple-700 transition"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => navigate("/patient/register")}
-                className="px-6 py-2 bg-purple-100 text-purple-700 border border-purple-300 rounded-sm hover:bg-purple-200 transition"
-              >
-                Register
-              </button>
-            </div>
+  if (!isPatientAuth) {
+    return (
+      <section className="min-h-screen flex items-center justify-center bg-[url('/hero.jpg')] bg-cover bg-center relative bg-fixed p-6">
+        <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm"></div>
+        <div className="relative z-10 w-full max-w-lg bg-white/10 backdrop-blur-xl border border-white/20 p-10 rounded-3xl shadow-2xl text-center">
+          <div className="w-20 h-20 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-amber-500/30">
+            <ShieldAlert size={40} className="text-amber-400" />
+          </div>
+          <h2 className="text-3xl font-bold text-white mb-4">Authentication Required</h2>
+          <p className="text-gray-300 mb-8 text-lg">You must be logged in as a patient to schedule a medical appointment with our specialists.</p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => navigate("/patient/login")}
+              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg transition transform hover:-translate-y-1"
+            >
+              Login Now
+            </button>
+            <button
+              onClick={() => navigate("/patient/register")}
+              className="px-8 py-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold rounded-xl transition transform hover:-translate-y-1"
+            >
+              Register
+            </button>
           </div>
         </div>
-      )}
+      </section>
+    );
+  }
 
-      {isPatientAuth && (
-        <section className="min-h-screen mt-10 flex items-center justify-center bg-gradient-to-br from-purple-200 via-purple-100 to-purple-50 px-4 py-10">
-          <div className="w-full max-w-3xl bg-white/90 backdrop-blur-lg shadow-xl rounded-sm p-8 sm:p-12 border border-purple-200">
-            <h2 className="text-3xl font-extrabold text-purple-800 text-center mb-10">
-              Book Appointment
-            </h2>
+  return (
+    <section className="min-h-screen bg-[url('/hero.jpg')] bg-cover bg-center relative bg-fixed py-20 px-4">
+      <div className="absolute inset-0 bg-gray-900/70 backdrop-blur-[3px]"></div>
 
-            {message && (
-              <p
-                className={`text-center mb-6 font-medium ${
-                  message.includes("✅") ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {message}
-              </p>
-            )}
+      <div className="relative z-10 w-full max-w-5xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-3xl overflow-hidden">
 
-            <form
-              onSubmit={handleSubmit}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-6"
-            >
-              {/* First Name */}
-              <div>
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={appointmentData.firstName}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 rounded-sm border border-purple-300 focus:ring-2 focus:ring-purple-500 bg-purple-50/70"
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600/50 to-purple-600/50 p-8 text-center border-b border-white/10">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 flex items-center justify-center gap-3">
+            <Calendar className="text-emerald-400" /> Book An Appointment
+          </h2>
+          <p className="text-gray-200">Fill out the form below to schedule your visit.</p>
+        </div>
+
+        <div className="p-8 md:p-12">
+          {message && (
+            <div className={`p-4 rounded-xl mb-8 text-center font-bold text-lg border ${message.includes("✅") ? "bg-green-500/20 border-green-500/30 text-green-300" : "bg-red-500/20 border-red-500/30 text-red-300"
+              }`}>
+              {message}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            {/* Personal Info Group */}
+            <div className="space-y-6">
+              <h3 className="text-xl font-semibold text-white border-b border-white/10 pb-2 mb-4">Personal Information</h3>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">First Name</label>
+                  <input type="text" name="firstName" value={appointmentData.firstName} onChange={handleChange} required
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Last Name</label>
+                  <input type="text" name="lastName" value={appointmentData.lastName} onChange={handleChange} required
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Email Address</label>
+                <div className="relative">
+                  <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input type="email" name="email" value={appointmentData.email} onChange={handleChange} required
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Phone</label>
+                <div className="relative">
+                  <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input type="text" name="phone" value={appointmentData.phone} onChange={handleChange} required
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Date of Birth</label>
+                  <input type="date" name="dob" value={appointmentData.dob} onChange={handleChange} required
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition [color-scheme:dark]"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Gender</label>
+                  <select name="gender" value={appointmentData.gender} onChange={handleChange} required
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition [&>option]:text-gray-900"
+                  >
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Appointment Info Group */}
+            <div className="space-y-6">
+              <h3 className="text-xl font-semibold text-white border-b border-white/10 pb-2 mb-4">Appointment Details</h3>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Appointment Date</label>
+                <div className="relative">
+                  <Clock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input type="date" name="appointment_date" value={appointmentData.appointment_date} onChange={handleChange} required
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition [color-scheme:dark]"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Select Doctor</label>
+                <div className="relative">
+                  <Stethoscope size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <select name="doctorId" value={appointmentData.doctorId} onChange={handleDoctorSelect} required
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition [&>option]:text-gray-900"
+                  >
+                    <option value="">Choose a specialist</option>
+                    {doctorData.map((d) => (
+                      <option key={d._id} value={d._id}>
+                        {d.firstName} {d.lastName} — {d.doctorDepartment}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Department</label>
+                <input type="text" name="department" value={appointmentData.department} readOnly
+                  className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-gray-300 cursor-not-allowed"
+                  placeholder="Auto-filled based on doctor"
                 />
               </div>
 
-              {/* Last Name */}
-              <div>
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={appointmentData.lastName}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 rounded-sm border border-purple-300 focus:ring-2 focus:ring-purple-500 bg-purple-50/70"
-                />
-              </div>
-
-              {/* Email */}
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={appointmentData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 rounded-sm border border-purple-300 focus:ring-2 focus:ring-purple-500 bg-purple-50/70"
-                />
-              </div>
-
-              {/* Phone */}
-              <div>
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  Phone
-                </label>
-                <input
-                  type="text"
-                  name="phone"
-                  value={appointmentData.phone}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 rounded-sm border border-purple-300 focus:ring-2 focus:ring-purple-500 bg-purple-50/70"
-                />
-              </div>
-
-              {/* DOB */}
-              <div>
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  Date of Birth
-                </label>
-                <input
-                  type="date"
-                  name="dob"
-                  value={appointmentData.dob}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 rounded-sm border border-purple-300 focus:ring-2 focus:ring-purple-500 bg-purple-50/70"
-                />
-              </div>
-
-              {/* Gender */}
-              <div>
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  Gender
-                </label>
-                <select
-                  name="gender"
-                  value={appointmentData.gender}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 rounded-sm border border-purple-300 focus:ring-2 focus:ring-purple-500 bg-purple-50/70"
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Have you visited before?</label>
+                <select name="hasVisited" value={appointmentData.hasVisited} onChange={handleChange} required
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition [&>option]:text-gray-900"
                 >
-                  <option value="">Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                </select>
-              </div>
-
-              {/* Appointment Date */}
-              <div>
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  Appointment Date
-                </label>
-                <input
-                  type="date"
-                  name="appointment_date"
-                  value={appointmentData.appointment_date}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 rounded-sm border border-purple-300 focus:ring-2 focus:ring-purple-500 bg-purple-50/70"
-                />
-              </div>
-
-              {/* Doctor Dropdown */}
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  Select Doctor
-                </label>
-                <select
-                  name="doctorId"
-                  value={appointmentData.doctorId}
-                  onChange={handleDoctorSelect}
-                  required
-                  className="w-full p-3 rounded-sm border border-purple-300 focus:ring-2 focus:ring-purple-500 bg-purple-50/70"
-                >
-                  <option value="">Select Doctor</option>
-                  {doctorData.map((d) => (
-                    <option key={d._id} value={d._id}>
-                      {d.firstName} {d.lastName} — {d.doctorDepartment}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Department (Auto-filled) */}
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  Department
-                </label>
-                <input
-                  type="text"
-                  name="department"
-                  value={appointmentData.department}
-                  readOnly
-                  className="w-full p-3 rounded-sm border border-purple-300 bg-purple-100 text-gray-700"
-                />
-              </div>
-
-              {/* Has Visited */}
-              <div>
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  Have you visited before?
-                </label>
-                <select
-                  name="hasVisited"
-                  value={appointmentData.hasVisited}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 rounded-sm border border-purple-300 focus:ring-2 focus:ring-purple-500 bg-purple-50/70"
-                >
-                  <option value="">Select</option>
+                  <option value="">Select status</option>
                   <option value="true">Yes</option>
                   <option value="false">No</option>
                 </select>
               </div>
+            </div>
 
-              {/* Address */}
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  Address
-                </label>
-                <textarea
-                  name="address"
-                  value={appointmentData.address}
-                  onChange={handleChange}
-                  rows="3"
-                  required
-                  className="w-full p-3 rounded-sm border border-purple-300 focus:ring-2 focus:ring-purple-500 bg-purple-50/70"
-                ></textarea>
+            {/* Address & Payment - Full Width */}
+            <div className="md:col-span-2 space-y-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Address</label>
+                <div className="relative">
+                  <MapPin size={18} className="absolute left-4 top-4 text-gray-400" />
+                  <textarea name="address" value={appointmentData.address} onChange={handleChange} rows="3" required
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition resize-none"
+                  ></textarea>
+                </div>
               </div>
 
-              {/* Payment Mode */}
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-purple-700 mb-1">
-                  Payment Mode
-                </label>
-                <select
-                  name="paymentMode"
-                  value={appointmentData.paymentMode}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 rounded-sm border border-purple-300 focus:ring-2 focus:ring-purple-500 bg-purple-50/70"
-                >
-                  <option value="">Select Payment Mode</option>
-                  {paymentModes.map((mode, i) => (
-                    <option key={i} value={mode}>
-                      {mode}
-                    </option>
-                  ))}
-                </select>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-300">Payment Mode</label>
+                <div className="relative">
+                  <CreditCard size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <select name="paymentMode" value={appointmentData.paymentMode} onChange={handleChange} required
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition [&>option]:text-gray-900"
+                  >
+                    <option value="">Select Payment Mode</option>
+                    {paymentModes.map((mode, i) => (
+                      <option key={i} value={mode}>
+                        {mode}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              {/* Submit */}
-              <button
-                type="submit"
-                disabled={loading}
-                className={`sm:col-span-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold py-3 rounded-sm shadow-lg transition ${
-                  loading
-                    ? "opacity-70 cursor-not-allowed"
-                    : "hover:from-purple-700 hover:to-purple-800 focus:ring-2 focus:ring-purple-400"
-                }`}
+              <button type="submit" disabled={loading}
+                className={`w-full py-4 text-lg font-bold text-white rounded-xl shadow-lg transition transform hover:-translate-y-1 ${loading ? "bg-gray-500 cursor-not-allowed" : "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 shadow-emerald-500/20"
+                  }`}
               >
-                {loading ? "Submitting..." : "Submit Appointment"}
+                {loading ? "Processing..." : "Confirm Appointment"}
               </button>
-            </form>
-          </div>
-        </section>
-      )}
-    </>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </section>
   );
 };
 

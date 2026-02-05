@@ -38,8 +38,8 @@ const patientSchema = new mongoose.Schema({
     type: String,
     required: [true, "Gender is required"],
     enum: {
-      values: ["male", "female"],
-      message: "Gender must be either male or female",
+      values: ["male", "female", "other"],
+      message: "Gender must be either male, female or other",
     },
   },
   password: {
