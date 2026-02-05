@@ -17,14 +17,12 @@ const MessageForm = () => {
     setLoading(true);
     try {
       const res = await sendMessage(firstName, lastName, email, phone, message);
-      if (res.success) {
+      if (res.data.success) { // Fixed: res.data.success based on axios response structure in AppState
         setFirstName("");
         setLastName("");
         setEmail("");
         setPhone("");
         setMessage("");
-      } else {
-        toast.error("Failed to send message. Please try again.");
       }
     } catch (error) {
       console.error("Message send error:", error);
@@ -34,92 +32,88 @@ const MessageForm = () => {
   };
 
   return (
-    <section className="w-full bg-purple-50 mt-3 py-16" id="contact">
-      <div className="container mx-auto px-6 md:px-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-purple-900 mb-10">
-          Send Us a Message
-        </h2>
+    <section className="w-full relative py-20 bg-[url('/hero.jpg')] bg-cover bg-center bg-fixed" id="contact">
+      <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-[2px]"></div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-8"
-        >
-          <div className="grid md:grid-cols-2 gap-6">
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
+        <div className="max-w-3xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 md:p-12 shadow-2xl">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-2">
+            Get in Touch
+          </h2>
+          <p className="text-center text-gray-300 mb-10">We'd love to hear from you. customized care sets us apart.</p>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">First Name</label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                  placeholder="John"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Last Name</label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                  placeholder="Doe"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition"
+                />
+              </div>
+            </div>
+
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                First Name
-              </label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
               <input
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                placeholder="john@example.com"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition"
               />
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Last Name
-              </label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
               <input
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 required
-                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                placeholder="+1 (555) 000-0000"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition"
               />
             </div>
-          </div>
-          <div className="mt-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-            />
-          </div>
-          <div className="mt-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Phone
-            </label>
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-            />
-          </div>
-          <div className="mt-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Message
-            </label>
-            <textarea
-              rows="4"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              required
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className={`mt-6 w-full py-2 px-4 rounded-md text-white transition 
-              ${
-                loading
-                  ? "bg-purple-400 cursor-not-allowed"
-                  : "bg-purple-600 hover:bg-purple-700"
-              }
-            `}
-          >
-            {loading ? "Sending..." : "Send Message"}
-          </button>
-        </form>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Message</label>
+              <textarea
+                rows="4"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+                placeholder="How can we help you?"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition resize-none"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/20 transition transform hover:-translate-y-0.5 ${loading ? "opacity-75 cursor-wait" : ""
+                }`}
+            >
+              {loading ? "Sending Message..." : "Send Message"}
+            </button>
+          </form>
+        </div>
       </div>
     </section>
   );

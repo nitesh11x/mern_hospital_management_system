@@ -16,7 +16,9 @@ function AppState({ children }) {
   const [appointments, setAppointments] = useState([]);
 
   // const url = "http://localhost:1111/api";
-  const url = "https://new-care-healtcare.onrender.com/api";
+  const url = import.meta.env.VITE_API_URL;
+
+  // const url = "https://new-care-healtcare.onrender.com/api";
 
   useEffect(() => {
     const storedAdminAuth = localStorage.getItem("isAdminAuth") === "true";
@@ -39,7 +41,7 @@ function AppState({ children }) {
         });
         setPatient(res.data);
         // console.log(res.data);
-        
+
 
       } catch (error) {
         toast.error(
@@ -65,7 +67,7 @@ function AppState({ children }) {
     };
     fetchDoctor();
   }, [isAdminAuth]);
- 
+
   // 🔹 Fetch Admins
   useEffect(() => {
     if (!isAdminAuth) return;
@@ -77,7 +79,7 @@ function AppState({ children }) {
         });
         setAdmin(res.data);
         // console.log(res.data);
-        
+
       } catch (error) {
         toast.error(error.response?.data?.message || "Failed to fetch admins");
       }
@@ -533,6 +535,7 @@ function AppState({ children }) {
         postAppointment,
         updateAppointmentStatus,
         postReview,
+        url, // Expose URL
       }}
     >
       {children}
